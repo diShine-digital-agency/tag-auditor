@@ -1,0 +1,255 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-04-04 12:00:00",
+  "containerVersion": {
+    "path": "accounts/123456/containers/789012/versions/1",
+    "accountId": "123456",
+    "containerId": "789012",
+    "containerVersionId": "1",
+    "name": "Production v42",
+    "container": {
+      "path": "accounts/123456/containers/789012",
+      "accountId": "123456",
+      "containerId": "789012",
+      "name": "My Website",
+      "publicId": "GTM-SAMPLE1",
+      "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/123456/containers/789012/workspaces/1"
+    },
+    "tag": [
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "tagId": "1",
+        "name": "GA4 - Config - All Pages",
+        "type": "gaawc",
+        "parameter": [
+          { "type": "template", "key": "measurementId", "value": "G-XXXXXXXXXX" }
+        ],
+        "firingTriggerId": ["2147479553"],
+        "fingerprint": "abc123",
+        "consentSettings": {
+          "consentStatus": "needed",
+          "consentType": { "list": [{ "type": "template", "value": "analytics_storage" }] }
+        }
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "tagId": "2",
+        "name": "GA4 - Event - Form Submit",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "template", "key": "eventName", "value": "form_submit" },
+          { "type": "template", "key": "measurementId", "value": "G-XXXXXXXXXX" }
+        ],
+        "firingTriggerId": ["3"],
+        "fingerprint": "abc124",
+        "consentSettings": {
+          "consentStatus": "needed",
+          "consentType": { "list": [{ "type": "template", "value": "analytics_storage" }] }
+        }
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "tagId": "3",
+        "name": "Meta - Pageview - All Pages",
+        "type": "fbevt",
+        "parameter": [
+          { "type": "template", "key": "pixelId", "value": "123456789" }
+        ],
+        "firingTriggerId": ["2147479553"],
+        "fingerprint": "abc125"
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "tagId": "4",
+        "name": "Old UA Tag",
+        "type": "ua",
+        "parameter": [
+          { "type": "template", "key": "trackingId", "value": "UA-123456-1" }
+        ],
+        "firingTriggerId": ["2147479553"],
+        "fingerprint": "abc126"
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "tagId": "5",
+        "name": "Untitled Tag",
+        "type": "html",
+        "parameter": [
+          { "type": "template", "key": "html", "value": "<script>console.log('test');</script>" }
+        ],
+        "firingTriggerId": [],
+        "fingerprint": "abc127"
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "tagId": "6",
+        "name": "LinkedIn | Conversion | Thank You",
+        "type": "linkedin_tag",
+        "parameter": [
+          { "type": "template", "key": "partnerId", "value": "12345" }
+        ],
+        "firingTriggerId": ["4"],
+        "fingerprint": "abc128"
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "tagId": "7",
+        "name": "GA4 - Event - Button Click",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "template", "key": "eventName", "value": "button_click" },
+          { "type": "template", "key": "measurementId", "value": "G-XXXXXXXXXX" }
+        ],
+        "firingTriggerId": ["5"],
+        "fingerprint": "abc129",
+        "paused": "true",
+        "consentSettings": {
+          "consentStatus": "needed"
+        }
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "tagId": "8",
+        "name": "Custom Tracking Script",
+        "type": "html",
+        "parameter": [
+          { "type": "template", "key": "html", "value": "<script src='http://example.com/track.js'></script>" }
+        ],
+        "firingTriggerId": ["2147479553"],
+        "fingerprint": "abc130"
+      }
+    ],
+    "trigger": [
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "triggerId": "2147479553",
+        "name": "All Pages",
+        "type": "pageview",
+        "fingerprint": "tr1"
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "triggerId": "3",
+        "name": "Form Submission - Contact",
+        "type": "formSubmission",
+        "filter": [
+          {
+            "type": "equals",
+            "parameter": [
+              { "type": "template", "key": "arg0", "value": "{{Form ID}}" },
+              { "type": "template", "key": "arg1", "value": "contact-form" }
+            ]
+          }
+        ],
+        "fingerprint": "tr2"
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "triggerId": "4",
+        "name": "Pageview - Thank You",
+        "type": "pageview",
+        "filter": [
+          {
+            "type": "contains",
+            "parameter": [
+              { "type": "template", "key": "arg0", "value": "{{Page Path}}" },
+              { "type": "template", "key": "arg1", "value": "/thank-you" }
+            ]
+          }
+        ],
+        "fingerprint": "tr3"
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "triggerId": "5",
+        "name": "Click - CTA Button",
+        "type": "click",
+        "filter": [
+          {
+            "type": "equals",
+            "parameter": [
+              { "type": "template", "key": "arg0", "value": "{{Click Classes}}" },
+              { "type": "template", "key": "arg1", "value": "cta-button" }
+            ]
+          }
+        ],
+        "fingerprint": "tr4"
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "triggerId": "6",
+        "name": "New Trigger",
+        "type": "customEvent",
+        "customEventFilter": [
+          {
+            "type": "equals",
+            "parameter": [
+              { "type": "template", "key": "arg0", "value": "{{_event}}" },
+              { "type": "template", "key": "arg1", "value": "custom_event_old" }
+            ]
+          }
+        ],
+        "fingerprint": "tr5"
+      }
+    ],
+    "variable": [
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "variableId": "1",
+        "name": "DLV - Product Name",
+        "type": "v",
+        "parameter": [
+          { "type": "integer", "key": "dataLayerVersion", "value": "2" },
+          { "type": "template", "key": "name", "value": "productName" }
+        ],
+        "fingerprint": "var1"
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "variableId": "2",
+        "name": "CJS - Timestamp",
+        "type": "jsm",
+        "parameter": [
+          { "type": "template", "key": "javascript", "value": "function(){return Date.now();}" }
+        ],
+        "fingerprint": "var2"
+      },
+      {
+        "accountId": "123456",
+        "containerId": "789012",
+        "variableId": "3",
+        "name": "Unused Variable",
+        "type": "v",
+        "parameter": [
+          { "type": "integer", "key": "dataLayerVersion", "value": "2" },
+          { "type": "template", "key": "name", "value": "oldValue" }
+        ],
+        "fingerprint": "var3"
+      }
+    ],
+    "builtInVariable": [
+      { "type": "PAGE_URL", "name": "Page URL" },
+      { "type": "PAGE_PATH", "name": "Page Path" },
+      { "type": "CLICK_CLASSES", "name": "Click Classes" },
+      { "type": "FORM_ID", "name": "Form ID" },
+      { "type": "EVENT", "name": "Event" }
+    ],
+    "folder": [],
+    "fingerprint": "container123"
+  }
+}

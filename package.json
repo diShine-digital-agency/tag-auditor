@@ -1,0 +1,35 @@
+{
+  "name": "@dishine/tag-auditor",
+  "version": "1.0.0",
+  "description": "Audit Google Tag Manager containers — find unused tags, naming violations, missing triggers, performance issues, and governance problems",
+  "type": "module",
+  "bin": {
+    "tag-auditor": "./bin/cli.js"
+  },
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node bin/cli.js"
+  },
+  "keywords": [
+    "gtm",
+    "google-tag-manager",
+    "tag-audit",
+    "tag-manager",
+    "analytics",
+    "marketing",
+    "governance",
+    "lint",
+    "compliance"
+  ],
+  "author": "diShine Digital Agency <hello@dishine.it> (https://dishine.it)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diShine-digital-agency/tag-auditor.git"
+  },
+  "homepage": "https://github.com/diShine-digital-agency/tag-auditor",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {}
+}
