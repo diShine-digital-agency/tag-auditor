@@ -1,26 +1,16 @@
 # tag-auditor
 
-**Audit Google Tag Manager containers -- find unused tags, naming violations, missing consent, security risks, and performance issues.**
+**GTM containers get messy fast. This tool reads your container export and tells you exactly what's wrong.**
 
-Import a GTM container JSON export. Get a structured report with scores, issues, severity levels, and fixes.
+Tags pile up, consent settings get missed, someone adds a "test" tag that never gets removed, and three months later nobody remembers why half the custom HTML exists. tag-auditor parses a GTM container JSON export and runs 14 checks across governance, consent, security, performance, and naming. You get scores (0-100) in four areas and a list of issues sorted by severity, each with a specific fix.
 
-Built by [diShine Digital Agency](https://dishine.it)
+Zero dependencies. It just parses JSON -- no network requests, no browser, no build step.
 
----
-
-## What it does
-
-1. Parses a GTM container export (JSON)
-2. Identifies **every tag, trigger, and variable** with platform detection (GA4, Meta, LinkedIn, etc.)
-3. Runs **14 audit checks** across governance, consent, security, performance, and naming
-4. Scores the container in 4 areas (0-100 each)
-5. Reports issues with **severity levels** and **actionable fixes**
-
-Zero dependencies. Pure JSON parsing. No network requests, no browser needed.
+Built by [diShine](https://dishine.it)
 
 ---
 
-## Quick Start
+## Quick start
 
 ```bash
 # Install globally
@@ -39,7 +29,7 @@ tag-auditor container.json -s high
 tag-auditor container.json --naming naming-rules.json
 ```
 
-Or run without installing:
+Or run it without installing:
 
 ```bash
 npx @dishine/tag-auditor container.json
@@ -47,7 +37,7 @@ npx @dishine/tag-auditor container.json
 
 ---
 
-## How to export your GTM container
+## How to get your GTM container export
 
 1. Open [tagmanager.google.com](https://tagmanager.google.com)
 2. Select your container
@@ -59,7 +49,7 @@ npx @dishine/tag-auditor container.json
 
 ---
 
-## Output Example
+## What the output looks like
 
 ```
   Tag Auditor Report
@@ -100,46 +90,44 @@ npx @dishine/tag-auditor container.json
 
 ---
 
-## What it checks
-
-### 14 audit checks
+## The 14 audit checks
 
 | # | Check | Category | What it finds |
 |---|-------|----------|---------------|
-| 1 | Unused tags | Unused | Tags with no triggers (never fire) |
-| 2 | Unused triggers | Unused | Triggers not attached to any tag |
-| 3 | Unused variables | Unused | Variables not referenced anywhere |
-| 4 | Duplicate tags | Duplicates | Same type + configuration = double counting |
-| 5 | Paused tags | Governance | Dead weight in the container |
-| 6 | Consent configuration | Consent | Tracking tags without GDPR consent settings |
-| 7 | Consent management | Consent | No CMP detected (Consent Mode v2) |
-| 8 | Custom HTML security | Security | Dangerous patterns, insecure HTTP scripts |
-| 9 | Performance | Performance | Too many tags, large custom HTML, All Pages overload |
-| 10 | Deprecated types | Deprecated | Universal Analytics, Classic GA, DoubleClick |
-| 11 | Folder organization | Governance | No folders, unorganized tags |
-| 12 | Schedule issues | Governance | Expired campaign schedules |
-| 13 | Blocking triggers | Governance | No internal traffic filtering |
-| 14 | Tag sequencing | Configuration | GA4 events without config tag |
+| 1 | Unused tags | unused | tags with no triggers -- they never fire |
+| 2 | Unused triggers | unused | triggers not attached to any tag |
+| 3 | Unused variables | unused | variables not referenced anywhere |
+| 4 | Duplicate tags | duplicates | same type + configuration = double counting |
+| 5 | Paused tags | governance | dead weight sitting in the container |
+| 6 | Consent configuration | consent | tracking tags without GDPR consent settings |
+| 7 | Consent management | consent | no CMP detected (Consent Mode v2) |
+| 8 | Custom HTML security | security | dangerous patterns, insecure HTTP scripts |
+| 9 | Performance | performance | too many tags, large custom HTML, All Pages overload |
+| 10 | Deprecated types | deprecated | Universal Analytics, Classic GA, DoubleClick |
+| 11 | Folder organization | governance | no folders, unorganized tags |
+| 12 | Schedule issues | governance | expired campaign schedules nobody cleaned up |
+| 13 | Blocking triggers | governance | no internal traffic filtering |
+| 14 | Tag sequencing | configuration | GA4 events firing without a config tag |
 
-Plus **naming convention checks** (basic or custom rules).
+Plus naming convention checks (either basic heuristics or your own custom rules).
 
 ### Scoring (0-100 per area)
 
 | Area | What it measures |
 |------|-----------------|
-| **Governance** | Organization, naming, unused items, paused tags |
+| **Governance** | organization, naming, unused items, paused tags |
 | **Consent** | GDPR consent configuration, CMP presence |
-| **Security** | Custom HTML risks, insecure scripts |
-| **Performance** | Container size, tag count, All Pages load |
+| **Security** | custom HTML risks, insecure scripts |
+| **Performance** | container size, tag count, All Pages load |
 
 ### Issue severity
 
 | Level | Examples |
 |-------|----------|
-| **Critical** | Tracking tags without consent, dangerous code patterns |
-| **High** | Unused tags, deprecated types, insecure scripts, missing CMP |
-| **Medium** | Duplicate tags, naming violations, large custom HTML |
-| **Low** | Paused tags, unused triggers/variables, missing folders |
+| **critical** | tracking tags without consent, dangerous code patterns |
+| **high** | unused tags, deprecated types, insecure scripts, missing CMP |
+| **medium** | duplicate tags, naming violations, large custom HTML |
+| **low** | paused tags, unused triggers/variables, missing folders |
 
 ---
 
@@ -147,17 +135,17 @@ Plus **naming convention checks** (basic or custom rules).
 
 | Flag | Description | Default |
 |------|-------------|---------|
-| `-f, --format` | Output: `table`, `json`, `markdown`, `csv` | `table` |
-| `-o, --output` | Save report to file | stdout |
-| `-s, --severity` | Minimum severity: `critical`, `high`, `medium`, `low` | `low` |
-| `--naming` | Custom naming convention rules (JSON file) | basic checks |
-| `-q, --quiet` | Suppress progress messages | off |
+| `-f, --format` | output: `table`, `json`, `markdown`, `csv` | `table` |
+| `-o, --output` | save report to file | stdout |
+| `-s, --severity` | minimum severity: `critical`, `high`, `medium`, `low` | `low` |
+| `--naming` | custom naming convention rules (JSON file) | basic checks |
+| `-q, --quiet` | suppress progress messages | off |
 
 ---
 
-## Custom Naming Conventions
+## Custom naming conventions
 
-Create a JSON file with your team's naming rules:
+If your team has a naming standard (and you should), you can enforce it. Create a JSON file with your rules:
 
 ```json
 {
@@ -174,34 +162,34 @@ Then run:
 tag-auditor container.json --naming naming-rules.json
 ```
 
-Tags not following the convention will be flagged:
-- `"FB Pixel"` -> violation (should be `"Meta - Pageview - All Pages"`)
-- `"GA4 - Event - Form Submit"` -> passes
+Tags that don't follow the convention get flagged:
+- `"FB Pixel"` -- violation (should be `"Meta - Pageview - All Pages"`)
+- `"GA4 - Event - Form Submit"` -- passes
 
 ---
 
-## Platform Detection
+## Platform detection
 
-tag-auditor automatically recognizes tags from:
+tag-auditor automatically recognizes tags from these platforms:
 
-| Platform | Detection |
-|----------|-----------|
+| Platform | How it's detected |
+|----------|-------------------|
 | GA4 | `gaawc`, `gaawe`, `googtag` types |
 | Universal Analytics | `ua` type (flagged as deprecated) |
 | Google Ads | `awct`, conversion/remarketing tags |
 | Meta (Facebook) | `fbevt` type, name matching |
-| LinkedIn | Type or name matching |
-| TikTok | Type or name matching |
-| Twitter/X | Type or name matching |
-| Pinterest | Type or name matching |
+| LinkedIn | type or name matching |
+| TikTok | type or name matching |
+| Twitter/X | type or name matching |
+| Pinterest | type or name matching |
 | Microsoft Ads | `uet` type |
-| Hotjar | Type or name matching |
-| HubSpot | Name matching |
+| Hotjar | type or name matching |
+| HubSpot | name matching |
 | Custom HTML | `html`, `customhtml` types |
 
 ---
 
-## Programmatic Usage
+## Programmatic usage
 
 ```javascript
 import { parseContainer, auditContainer, formatMarkdown } from "@dishine/tag-auditor";
@@ -218,26 +206,26 @@ console.log(formatMarkdown({ container, audit }));
 
 // Access raw data
 console.log(audit.scores);       // { overall, governance, consent, security, performance }
-console.log(audit.issues);       // Array of issues with severity, fix instructions
-console.log(audit.summary);      // Platform breakdown, issue counts
+console.log(audit.issues);       // array of issues with severity and fix instructions
+console.log(audit.summary);      // platform breakdown, issue counts
 ```
 
 ---
 
-## Exit Codes
+## Exit codes
 
 | Code | Meaning |
 |------|---------|
-| `0` | No critical issues |
-| `1` | Critical issues found |
-| `2` | Fatal error (invalid file) |
+| `0` | no critical issues |
+| `1` | critical issues found |
+| `2` | fatal error (invalid file) |
 
 ---
 
 ## Requirements
 
 - **Node.js** 18 or later
-- **Zero dependencies** -- pure JSON parsing, no external packages
+- That's it. Zero dependencies -- pure JSON parsing, no external packages.
 
 ---
 
@@ -245,4 +233,4 @@ console.log(audit.summary);      // Platform breakdown, issue counts
 
 MIT License -- see [LICENSE](LICENSE) for details.
 
-Copyright (c) 2026 [diShine Digital Agency](https://dishine.it)
+Copyright (c) 2026 [diShine](https://dishine.it)
