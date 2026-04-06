@@ -1,6 +1,6 @@
 {
   "name": "@dishine/tag-auditor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Audit Google Tag Manager containers — find unused tags, naming violations, missing triggers, performance issues, and governance problems",
   "type": "module",
   "bin": {
@@ -8,7 +8,8 @@
   },
   "main": "./src/index.js",
   "scripts": {
-    "start": "node bin/cli.js"
+    "start": "node bin/cli.js",
+    "test": "node test/test.js"
   },
   "keywords": [
     "gtm",
