@@ -14,8 +14,6 @@ export function parseContainer(raw) {
 
   if (raw.containerVersion) {
     cv = raw.containerVersion;
-  } else if (raw.container && raw.containerVersion) {
-    cv = raw.containerVersion;
   } else if (Array.isArray(raw)) {
     // Some exports are wrapped in an array
     const first = raw[0];
