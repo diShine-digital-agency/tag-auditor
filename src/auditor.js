@@ -396,8 +396,7 @@ function checkConversionLinker(container) {
 
   const hasConversionLinker = container.tags.some((t) =>
     t.type === "gclidw" ||
-    (t.name || "").toLowerCase().includes("conversion linker") ||
-    (t.name || "").toLowerCase().includes("linker")
+    (t.name || "").toLowerCase().includes("conversion linker")
   );
 
   if (!hasConversionLinker) {
