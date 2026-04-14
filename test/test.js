@@ -148,6 +148,77 @@ const emptyAudit = auditContainer(emptyContainer);
 assert(emptyAudit.issues.length === 0, "empty container has no issues");
 assert(emptyAudit.scores.overall === 100, "empty container scores 100");
 
+// Conversion Linker check
+const adsContainer = parseContainer({ containerVersion: {
+  tag: [
+    { tagId: "1", name: "Google Ads - Conversion", type: "awct", firingTriggerId: ["1"],
+      parameter: [] },
+  ],
+  trigger: [{ triggerId: "1", name: "All Pages", type: "pageview" }],
+} });
+const adsAudit = auditContainer(adsContainer);
+const linkerIssues = adsAudit.issues.filter(i => i.title === "No Conversion Linker tag for Google Ads");
+assert(linkerIssues.length === 1, "missing Conversion Linker detected for Google Ads");
+
+const adsWithLinker = parseContainer({ containerVersion: {
+  tag: [
+    { tagId: "1", name: "Google Ads - Conversion", type: "awct", firingTriggerId: ["1"], parameter: [] },
+    { tagId: "2", name: "Conversion Linker", type: "gclidw", firingTriggerId: ["1"], parameter: [] },
+  ],
+  trigger: [{ triggerId: "1", name: "All Pages", type: "pageview" }],
+} });
+const adsWithLinkerAudit = auditContainer(adsWithLinker);
+const noLinkerIssues = adsWithLinkerAudit.issues.filter(i => i.title === "No Conversion Linker tag for Google Ads");
+assert(noLinkerIssues.length === 0, "no Conversion Linker issue when linker tag exists");
+
+// Circular dependency check
+const circularContainer = parseContainer({ containerVersion: {
+  tag: [
+    { tagId: "1", name: "Tag A", type: "html", firingTriggerId: ["1"],
+      setupTag: [{ tagName: "Tag B" }], parameter: [] },
+    { tagId: "2", name: "Tag B", type: "html", firingTriggerId: ["1"],
+      setupTag: [{ tagName: "Tag A" }], parameter: [] },
+  ],
+  trigger: [{ triggerId: "1", name: "All Pages", type: "pageview" }],
+} });
+const circularAudit = auditContainer(circularContainer);
+const circularIssues = circularAudit.issues.filter(i => i.title.includes("Circular"));
+assert(circularIssues.length === 1, "circular tag dependency detected");
+
+const noCircularContainer = parseContainer({ containerVersion: {
+  tag: [
+    { tagId: "1", name: "Tag A", type: "html", firingTriggerId: ["1"],
+      setupTag: [{ tagName: "Tag B" }], parameter: [] },
+    { tagId: "2", name: "Tag B", type: "html", firingTriggerId: ["1"], parameter: [] },
+  ],
+  trigger: [{ triggerId: "1", name: "All Pages", type: "pageview" }],
+} });
+const noCircularAudit = auditContainer(noCircularContainer);
+const noCircularIssues = noCircularAudit.issues.filter(i => i.title.includes("Circular"));
+assert(noCircularIssues.length === 0, "no circular dependency when sequencing is one-way");
+
+// GA4 Measurement ID check
+const ga4NoId = parseContainer({ containerVersion: {
+  tag: [
+    { tagId: "1", name: "GA4 Config", type: "gaawc", firingTriggerId: ["1"], parameter: [] },
+  ],
+  trigger: [{ triggerId: "1", name: "All Pages", type: "pageview" }],
+} });
+const ga4NoIdAudit = auditContainer(ga4NoId);
+const measIdIssues = ga4NoIdAudit.issues.filter(i => i.title.includes("Measurement ID"));
+assert(measIdIssues.length === 1, "missing GA4 Measurement ID detected");
+
+const ga4WithId = parseContainer({ containerVersion: {
+  tag: [
+    { tagId: "1", name: "GA4 Config", type: "gaawc", firingTriggerId: ["1"],
+      parameter: [{ key: "measurementId", value: "G-ABC123", type: "template" }] },
+  ],
+  trigger: [{ triggerId: "1", name: "All Pages", type: "pageview" }],
+} });
+const ga4WithIdAudit = auditContainer(ga4WithId);
+const noMeasIdIssues = ga4WithIdAudit.issues.filter(i => i.title.includes("Measurement ID"));
+assert(noMeasIdIssues.length === 0, "no Measurement ID issue when ID is present");
+
 // ── Reporter tests ─────────────────────────────────────────────────────
 console.log("\nReporter");
 

@@ -28,6 +28,9 @@ export function auditContainer(container, options = {}) {
   issues.push(...checkScheduleIssues(container));
   issues.push(...checkMissingBlockingTriggers(container));
   issues.push(...checkTagSequencing(container));
+  issues.push(...checkConversionLinker(container));
+  issues.push(...checkCircularDependencies(container));
+  issues.push(...checkGA4MeasurementId(container));
 
   if (namingConfig) {
     issues.push(...checkNamingConventions(container, namingConfig));
@@ -380,6 +383,93 @@ function checkTagSequencing(container) {
       item: "container", itemType: "container",
       fix: `Add a GA4 Configuration tag (or Google Tag) that fires on All Pages.`,
     });
+  }
+  return issues;
+}
+
+function checkConversionLinker(container) {
+  const issues = [];
+  const googleAdsTags = container.tags.filter((t) =>
+    t.platform === "Google Ads" && !t.paused
+  );
+  if (googleAdsTags.length === 0) return issues;
+
+  const hasConversionLinker = container.tags.some((t) =>
+    t.type === "gclidw" ||
+    (t.name || "").toLowerCase().includes("conversion linker") ||
+    (t.name || "").toLowerCase().includes("linker")
+  );
+
+  if (!hasConversionLinker) {
+    issues.push({
+      severity: "high", category: "configuration",
+      title: "No Conversion Linker tag for Google Ads",
+      detail: `Container has ${googleAdsTags.length} Google Ads tag(s) but no Conversion Linker. Without it, cross-domain tracking and conversion attribution may not work correctly.`,
+      item: "container", itemType: "container",
+      fix: `Add a Conversion Linker tag that fires on All Pages. In GTM: Tags > New > Conversion Linker.`,
+    });
+  }
+  return issues;
+}
+
+function checkCircularDependencies(container) {
+  const issues = [];
+  const tagsByName = new Map();
+  for (const tag of container.tags) tagsByName.set(tag.name, tag);
+
+  for (const tag of container.tags) {
+    const setupNames = tag.setupTagIds || [];
+    const teardownNames = tag.teardownTagIds || [];
+
+    for (const depName of [...setupNames, ...teardownNames]) {
+      if (!depName) continue;
+      const depTag = tagsByName.get(depName);
+      if (!depTag) continue;
+
+      const depSetup = depTag.setupTagIds || [];
+      const depTeardown = depTag.teardownTagIds || [];
+      if (depSetup.includes(tag.name) || depTeardown.includes(tag.name)) {
+        issues.push({
+          severity: "high", category: "configuration",
+          title: `Circular tag dependency: "${tag.name}" ↔ "${depName}"`,
+          detail: `Tags "${tag.name}" and "${depName}" reference each other in setup/teardown sequencing, creating a circular dependency that may prevent both from firing.`,
+          item: tag.name, itemType: "tag",
+          fix: `Remove the circular reference. Only one tag should depend on the other, not both.`,
+        });
+      }
+    }
+  }
+
+  // Deduplicate (A↔B and B↔A are the same)
+  const seen = new Set();
+  return issues.filter((i) => {
+    const key = i.title;
+    if (seen.has(key)) return false;
+    // Also check the reverse pair
+    const reverseKey = key.replace(/: "(.+?)" ↔ "(.+?)"/, ': "$2" ↔ "$1"');
+    if (seen.has(reverseKey)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function checkGA4MeasurementId(container) {
+  const issues = [];
+  const ga4ConfigTags = container.tags.filter((t) =>
+    t.type === "gaawc" || t.type === "googtag"
+  );
+
+  for (const tag of ga4ConfigTags) {
+    const measurementId = tag.params.measurementId || tag.params.tagId || "";
+    if (!measurementId || measurementId.trim() === "") {
+      issues.push({
+        severity: "high", category: "configuration",
+        title: `GA4 config tag missing Measurement ID: "${tag.name}"`,
+        detail: `Tag "${tag.name}" is a GA4 configuration tag but has no Measurement ID (G-XXXXXXX). Without it, no data is sent to GA4.`,
+        item: tag.name, itemType: "tag",
+        fix: `Add the Measurement ID (G-XXXXXXX) in the tag configuration. Find it in GA4: Admin > Data Streams > your stream.`,
+      });
+    }
   }
   return issues;
 }
