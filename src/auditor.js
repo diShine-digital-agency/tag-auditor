@@ -446,7 +446,7 @@ function checkCircularDependencies(container) {
     const key = i.title;
     if (seen.has(key)) return false;
     // Also check the reverse pair
-    const reverseKey = key.replace(/: "(.+?)" ↔ "(.+?)"/, ': "$2" ↔ "$1"');
+    const reverseKey = key.replace(/: "([^"]+)" ↔ "([^"]+)"/, ': "$2" ↔ "$1"');
     if (seen.has(reverseKey)) return false;
     seen.add(key);
     return true;
