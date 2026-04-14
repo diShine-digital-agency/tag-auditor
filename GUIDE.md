@@ -335,6 +335,38 @@ tag-auditor container1.json container2.json -f json -o combined.json
 
 **How to fix:** If you don't need it anymore, delete it. If it's temporary, set a reminder to review it.
 
+### "No Conversion Linker tag for Google Ads" (High)
+
+**What it means:** The container has Google Ads conversion or remarketing tags but no Conversion Linker tag.
+
+**Why it matters:** The Conversion Linker tag stores click information (GCLID) in first-party cookies. Without it, Google Ads cannot properly attribute conversions, especially across sessions or devices. Cross-domain tracking also won't work.
+
+**How to fix:**
+1. In GTM, create a new tag
+2. Choose **Conversion Linker** as the tag type
+3. Set it to fire on **All Pages**
+4. Publish the container
+
+### "Circular tag dependency" (High)
+
+**What it means:** Two tags reference each other in their setup/teardown sequencing. For example, Tag A has Tag B as a setup tag, and Tag B has Tag A as a setup tag.
+
+**Why it matters:** Circular dependencies can prevent both tags from firing, or cause unpredictable execution order.
+
+**How to fix:** Open both tags in GTM, go to **Advanced Settings** > **Tag Sequencing**, and remove one of the circular references so the dependency flows in one direction only.
+
+### "GA4 config tag missing Measurement ID" (High)
+
+**What it means:** A GA4 Configuration tag (or Google Tag) exists but has no Measurement ID (G-XXXXXXX) configured.
+
+**Why it matters:** The Measurement ID tells GA4 where to send data. Without it, no events or pageviews reach your GA4 property.
+
+**How to fix:**
+1. Find your Measurement ID in GA4: **Admin** > **Data Streams** > select your stream > copy the Measurement ID (starts with `G-`)
+2. In GTM, edit the GA4 Configuration tag
+3. Paste the Measurement ID in the appropriate field
+4. Publish the container
+
 ---
 
 ## 11. Troubleshooting

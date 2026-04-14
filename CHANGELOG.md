@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-04-14
+
+### Added
+
+- **Conversion Linker check**: Detects when Google Ads tags exist without a Conversion Linker tag, which is required for proper conversion attribution and cross-domain tracking.
+- **Circular tag dependency check**: Detects setup/teardown tag sequencing loops where two tags reference each other, which can prevent both from firing.
+- **GA4 Measurement ID check**: Verifies GA4 configuration tags have a Measurement ID (G-XXXXXXX) set; without it no data reaches GA4.
+- 6 new tests covering the three new audit checks (73 total).
+
+### Changed
+
+- Total audit checks increased from 14 to 17.
+- Updated README, GUIDE, and CONTRIBUTING documentation to reflect new checks.
+
 ## [1.1.0] - 2026-04-06
 
 ### Added
@@ -37,5 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Programmatic API (`parseContainer`, `auditContainer`, `formatMarkdown`, etc.).
 - Zero external dependencies.
 
+[1.2.0]: https://github.com/diShine-digital-agency/tag-auditor/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/diShine-digital-agency/tag-auditor/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/diShine-digital-agency/tag-auditor/releases/tag/v1.0.0

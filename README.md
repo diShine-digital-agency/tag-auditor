@@ -4,7 +4,7 @@
   <img src="images/tag_editor_01_hero_audit_scene.webp" alt="Tag Editor audit Scene" width="65%">
 </p>
 
-tag-auditor reads a GTM container JSON export and runs 14 checks across governance, consent, security, performance, and naming. It produces scores (0–100) in four areas and a list of issues sorted by severity, each with a specific fix.
+tag-auditor reads a GTM container JSON export and runs 17 checks across governance, consent, security, performance, and naming. It produces scores (0–100) in four areas and a list of issues sorted by severity, each with a specific fix.
 
 No external dependencies. No network requests. It parses JSON locally.
 Built by [diShine Digital Agency](https://dishine.it).
@@ -102,6 +102,9 @@ You need at least **Read** access to the GTM container. See the [User Guide](GUI
 | 12 | Schedule issues | governance | Expired campaign schedules |
 | 13 | Blocking triggers | governance | No internal traffic filtering |
 | 14 | Tag sequencing | configuration | GA4 events firing without a config tag |
+| 15 | Conversion Linker | configuration | Google Ads tags without a Conversion Linker tag |
+| 16 | Circular dependencies | configuration | Setup/teardown tags referencing each other in a loop |
+| 17 | GA4 Measurement ID | configuration | GA4 config tags missing a Measurement ID (G-XXXXXXX) |
 
 Plus naming convention checks (basic heuristics or custom rules).
 
