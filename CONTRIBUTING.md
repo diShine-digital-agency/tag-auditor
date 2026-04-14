@@ -25,7 +25,7 @@ Tests are in `test/test.js` and run with Node.js directly (no test framework).
 bin/cli.js          CLI entry point
 src/index.js        Public API exports
 src/parser.js       GTM container JSON parser
-src/auditor.js      14 audit checks + scoring
+src/auditor.js      17 audit checks + scoring
 src/reporter.js     Output formatters (table, JSON, Markdown, CSV)
 test/test.js        Test suite
 test/sample-container.json  Sample GTM container for testing
