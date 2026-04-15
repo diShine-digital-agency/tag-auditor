@@ -1,13 +1,26 @@
-# tag-auditor, your compagnon to audit Google Tag Manager containers for unused tags, missing consent, security risks, and naming issues.
+# 🛡️ TAG Auditor: easily audit Google Tag Manager containers for unused tags, missing consent, security risks, and naming issues.
+
+<div align="center">
+  
+[![diShine Logo](https://dishine.it/favicon.ico)](https://dishine.it/)
+
+***Transform. Automate. Shine!***
+
+[![Website](https://img.shields.io/badge/Website-dishine.it-blue)](https://dishine.it/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-diShine-blue)](https://linkedin.com/company/100682596)
+[![Location](https://img.shields.io/badge/Location-Milan%2C%20Italy-green)]()
+[![License: CC0](https://img.shields.io/badge/License-CC0%201.0-lightgrey)](LICENSE)
 
 <p align="center">
-  <img src="images/tag_editor_01_hero_audit_scene.webp" alt="Tag Editor audit Scene" width="65%">
+  <img src="images/tag_editor_01_hero_audit_scene.webp" alt="Tag Editor audit Scene" width="100%">
 </p>
 
-tag-auditor reads a GTM container JSON export and runs 17 checks across governance, consent, security, performance, and naming. It produces scores (0–100) in four areas and a list of issues sorted by severity, each with a specific fix.
+***TAG Auditor reads a GTM container JSON export and runs 17 checks across governance, consent, security, performance, and naming. It produces scores (0–100) in four areas and a list of issues sorted by severity, each with a specific fix.
+No external dependencies. No network requests. It parses JSON locally.***
 
-No external dependencies. No network requests. It parses JSON locally.
 Built by [diShine Digital Agency](https://dishine.it).
+
+</div>
 
 <p align="center">
   <img src="images/tag_editor_02_issue_remediation_closeup.webp" alt="Bonjour responsive" width="49%">
