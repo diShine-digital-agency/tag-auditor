@@ -1,4 +1,4 @@
-# 🛡️ TAG Auditor: easily audit Google Tag Manager containers for unused tags, missing consent, security risks, and naming issues.
+# 🛡️ TAG Auditor: easily audit containers on 17 checks across governance, consent, security, performance, and naming.
 
 <div align="center">
   
@@ -12,7 +12,7 @@
 [![License: CC0](https://img.shields.io/badge/License-CC0%201.0-lightgrey)](LICENSE)
 
 <p align="center">
-  <img src="images/tag_editor_01_hero_audit_scene.webp" alt="Tag Editor audit Scene" width="100%">
+  <img src="images/tag_editor_01_hero_audit_scene.webp" alt="Tag Editor audit Scene" width="80%">
 </p>
 
 ***TAG Auditor reads a GTM container JSON export and runs 17 checks across governance, consent, security, performance, and naming. It produces scores (0–100) in four areas and a list of issues sorted by severity, each with a specific fix.
