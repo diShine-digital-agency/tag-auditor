@@ -101,7 +101,7 @@ You need at least **Read** access to the GTM container. See the [User Guide](GUI
 
 | # | Check | Category | What it finds |
 |---|-------|----------|---------------|
-| 1 | Unused tags | unused | Tags with no triggers — they never fire |
+| 1 | Unused tags | unused | Tags with no triggers (they never fire) |
 | 2 | Unused triggers | unused | Triggers not attached to any tag |
 | 3 | Unused variables | unused | Variables not referenced anywhere |
 | 4 | Duplicate tags | duplicates | Same type + configuration (risk of double-counting) |
